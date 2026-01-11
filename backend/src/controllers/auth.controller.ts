@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/auth.service";
-import { Role } from "@prisma/client";
 
 // REGISTER
 
@@ -13,14 +12,14 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Champs requis manquants" });
     }
 
-    if (!Object.values(Role).includes(role)) {
+    if (!Object.values(role).includes(role)) {
       return res.status(400).json({ error: "Rôle invalide" });
     }
 
     const user = await AuthService.register(
       email,
       password,
-      role as Role,
+      role,
       tenantId
     );
 

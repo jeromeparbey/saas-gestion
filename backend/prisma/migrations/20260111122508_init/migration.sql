@@ -24,6 +24,7 @@ CREATE TABLE "User" (
     "role" "Role" NOT NULL,
     "tenantId" TEXT,
     "is2FAEnabled" BOOLEAN NOT NULL DEFAULT false,
+    "twoFASecret" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
