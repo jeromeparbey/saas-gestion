@@ -7,10 +7,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
 }
 
+// =========================
 // ENUMS
+// =========================
 
 enum Role {
   SUPERADMIN
@@ -26,7 +27,9 @@ enum SubscriptionPlan {
   PREMIUM
 }
 
+// =========================
 // TENANT (COMMERCE)
+// =========================
 
 model Tenant {
   id               String   @id @default(uuid())
@@ -42,30 +45,36 @@ model Tenant {
   updatedAt        DateTime @updatedAt
 }
 
+// =========================
 // USER
+// =========================
 
 model User {
-  id          String   @id @default(uuid())
-  email       String   @unique
-  password    String
-  role        Role
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  role          Role
 
   // SUPERADMIN n'a pas de tenant
-  tenantId    String?
-  tenant      Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId      String?
+  tenant        Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  is2FAEnabled Boolean @default(false)
+  // 🔐 2FA
+  is2FAEnabled  Boolean @default(false)
+  twoFASecret   String?
 
-  sales       Sale[]
+  sales         Sale[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([tenantId])
   @@index([role])
 }
 
+// =========================
 // PRODUCT (STOCK)
+// =========================
 
 model Product {
   id        String   @id @default(uuid())
@@ -85,7 +94,9 @@ model Product {
   @@index([name])
 }
 
+// =========================
 // SALE (VENTE)
+// =========================
 
 model Sale {
   id          String   @id @default(uuid())
@@ -106,7 +117,9 @@ model Sale {
   @@index([createdAt])
 }
 
+// =========================
 // SALE ITEM (LIGNES DE VENTE)
+// =========================
 
 model SaleItem {
   id        String   @id @default(uuid())
