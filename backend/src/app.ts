@@ -1,13 +1,14 @@
-import express from "express"
-import cors from "cors"
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
-const app = express()
+dotenv.config();
 
-app.use(cors())
-app.use(express.json())
+const app = express();
 
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" })
-})
+app.use(cors());
 
-export default app
+app.use(express.json());
+
+
+export default app;
