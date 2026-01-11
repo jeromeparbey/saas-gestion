@@ -15,11 +15,11 @@ app.use(express.json());
 const routesPath = path.join(__dirname, "routes"); // dossier routes
 
 fs.readdirSync(routesPath).forEach((file) => {
-  // On ne prend que les fichiers .ts ou .js
-  if (file.endsWith(".ts") || file.endsWith(".js")) {
+
+    if (file.endsWith(".ts") || file.endsWith(".js")) {
     // Import dynamique
     const imported = require(path.join(routesPath, file));
-    const route = imported.default || imported; // support default et named export
+    const route = imported.default || imported; 
 
     // Vérification que c'est bien un Router
     if (typeof route === "function") {
