@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
+import { Role } from "@prisma/client";
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
@@ -12,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
 export const register = async (
   email: string,
   password: string, 
-  role: string,
+ role: Role,
   tenantId?: string
 ) => {
   const existing = await prisma.user.findUnique({ where: { email } });

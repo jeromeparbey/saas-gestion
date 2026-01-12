@@ -1,21 +1,35 @@
 import { Router } from "express";
 import * as AuthController from "../controllers/auth.controller";
-import { authenticate } from "../middlewares/auth.middleware"; // vérifie JWT
+import { authenticateAndIsolate } from "../middlewares/isolation.middleware";
 
 const router = Router();
 
+/**
+ * 🔓 ROUTES PUBLIQUES (PAS DE JWT)
+ */
 
-// Enregistrement utilisateur
-
+// Enregistrement
 router.post("/register", AuthController.register);
 
-// Login avec gestion 2FA
+// Login
 router.post("/login", AuthController.login);
 
-// Setup 2FA → génère QR code, doit être authentifié
-router.post("/2fa/setup", authenticate, AuthController.setup2FA);
+/**
+ * 🔐 ROUTES PROTÉGÉES (JWT + ISOLATION)
+ */
 
-// Vérification 2FA → vérifie OTP et retourne le JWT final
-router.post("/2fa/verify", authenticate, AuthController.verify2FA);
+// Setup 2FA → utilisateur déjà identifié
+router.post(
+  "/2fa/setup",
+  authenticateAndIsolate,
+  AuthController.setup2FA
+);
+
+// Vérification OTP
+router.post(
+  "/2fa/verify",
+  authenticateAndIsolate,
+  AuthController.verify2FA
+);
 
 export default router;
